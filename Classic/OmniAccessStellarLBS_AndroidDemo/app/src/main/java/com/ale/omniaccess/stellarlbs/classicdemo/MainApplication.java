@@ -39,6 +39,7 @@ public class MainApplication extends Application {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         RainbowSdk.instance().setNotificationBuilder(getApplicationContext(), MainActivity.class, R.drawable.biz_on_status,"Stellar LBS Demo app", "Connect to the app", Color.RED);
+        RainbowSdk.instance().getNotificationBuilder().setChannelId("RainbowNotification");
         RainbowSdk.instance().initialize();
     }
 

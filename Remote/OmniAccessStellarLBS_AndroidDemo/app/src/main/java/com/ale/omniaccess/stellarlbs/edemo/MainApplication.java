@@ -17,6 +17,7 @@ package com.ale.omniaccess.stellarlbs.edemo;
 
 import android.app.Application;
 import android.graphics.Color;
+import android.os.StrictMode;
 
 import com.ale.rainbowsdk.RainbowSdk;
 
@@ -32,13 +33,14 @@ public class MainApplication extends Application {
 
     @Override
     public void onCreate() {
+        super.onCreate();
         Keys keys = new Keys();
         AccountManager.start(this, keys.getMwzApiKey());
-        RainbowSdk.instance().setNotificationBuilder(getApplicationContext(), MainActivity.class, 0, getString(R.string.app_name), "Connect to the app", Color.RED);
-        // RainbowSdk.instance().initialize("test", "test");
-        //RainbowSdk.instance().connection().uninitialize();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        RainbowSdk.instance().setNotificationBuilder(getApplicationContext(), MainActivity.class, R.drawable.biz_on_status,"Stellar LBS Demo app", "Connect to the app", Color.RED);
+        RainbowSdk.instance().getNotificationBuilder().setChannelId("RainbowNotification");
         RainbowSdk.instance().initialize();
-        super.onCreate();
     }
 
 

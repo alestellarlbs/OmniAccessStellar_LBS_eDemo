@@ -40,6 +40,8 @@
 
 package com.ale.omniaccess.stellarlbs.classicdemo;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -175,6 +177,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (notificationManager != null)
+            {
+                NotificationChannel channel = new NotificationChannel("RainbowNotification", "name", NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
+
+                channel = new NotificationChannel("RainbowNotification", "name", NotificationManager.IMPORTANCE_LOW);
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
         //Jerome Elleouet +
         String sd = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
         String fileName = sd + "/ALE LBS/stellarlbsclassicdemo.log";
@@ -199,14 +214,12 @@ public class MainActivity extends AppCompatActivity {
         _trackingStatus = sharedPref.getBoolean("tracking", false);
         _trackingCount = 0;
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1){
-            _Rainbow = new RainbowManager();
-            String login = sharedPref.getString("rainbowlogin", "");
-            String password = sharedPref.getString("rainbowpassword", "");
-            if ((!login.isEmpty()) && (!password.isEmpty())) {
-                Log.i("RainbowDebug","Startup Connect");
-                _Rainbow.connectUserToRainbow(login, password);
-            }
+        _Rainbow = new RainbowManager();
+        String login = sharedPref.getString("rainbowlogin", "");
+        String password = sharedPref.getString("rainbowpassword", "");
+        if ((!login.isEmpty()) && (!password.isEmpty())) {
+            Log.i("RainbowDebug","Startup Connect");
+            _Rainbow.connectUserToRainbow(login, password);
         }
 
         Alogger.setJournal("MainActivity", "Venue from preferences = " + String.valueOf(getVenue()));
@@ -682,11 +695,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i("onCreateOptionsMenu","Methods activated");
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1){
-            getMenuInflater().inflate(R.menu.main_menu_no_rainbow, menu);
-        }else{
             getMenuInflater().inflate(R.menu.main_menu, menu);
-        }
 
         try {
             Log.i("onCreateOptionsMenu","Venue: " + venueToString(getVenue()));
