@@ -296,7 +296,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     alert.cancel();
-                    AlertBox(error);
+                    isUserLoggedIn = true;
+                    onCreateOptionsMenu(menu);
+                    fetchLocationData(getVenue());
+//                    alert.cancel();
+//                    AlertBox(error);
                 }
             });
             queue.add(request);
@@ -802,11 +806,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(isUserLoggedIn){
             Log.i("onCreateOptionsMenu","Methods activated");
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1){
-                //getMenuInflater().inflate(, menu);
-            }else {
-                getMenuInflater().inflate(R.menu.main_menu, menu);
-            }
+            getMenuInflater().inflate(R.menu.main_menu, menu);
             try {
                 Log.i("onCreateOptionsMenu","Venue: " + venueToString(getVenue()));
                 int venue = getVenue();
