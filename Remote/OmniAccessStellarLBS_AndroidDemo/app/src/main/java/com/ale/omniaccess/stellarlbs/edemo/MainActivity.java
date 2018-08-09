@@ -296,11 +296,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     alert.cancel();
-                    isUserLoggedIn = true;
-                    onCreateOptionsMenu(menu);
-                    fetchLocationData(getVenue());
-//                    alert.cancel();
-//                    AlertBox(error);
+                    AlertBox(error);
                 }
             });
             queue.add(request);
